@@ -47,15 +47,18 @@ public class Main {
         }
 
         List<List<Home>> balancedDays = homeProcessor.minimizeDriveTime(days);
-        System.out.println("\n===== Total driving time (Balanced list): " + (int)homeProcessor.calculateTotalTime(days) + " min\n");
+
+        System.out.println("\n===== Total time (Balanced list): " + (int)homeProcessor.calculateTotalTime(days) + " min\n");
+
         for(List<Home> day : balancedDays)
         {
             System.out.println("\n===== DAY " + (balancedDays.indexOf(day)+1)+ " =============================================================================");
             System.out.println("Homes: " + day);
             System.out.println("Number of houses: " + day.size());
-            System.out.println("Total time: " + (int)homeProcessor.calculateTime(day) + " min");
+            System.out.println("Total time: " + homeProcessor.calculateTime(day) + " min");
         }
 
+        homeProcessor.showDriveTime(balancedDays);
         csvParser.writeFile(balancedDays, BALANCED_FILE);
     }
 

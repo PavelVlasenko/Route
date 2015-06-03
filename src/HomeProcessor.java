@@ -67,7 +67,7 @@ public class HomeProcessor
             Home currentBasicHome = findNearestHome(basicPoint, dayList);
             double driveBasic = getDriveTime(basicPoint, currentBasicHome);
             Home currentEndHome = findNearestHome(endPoint, dayList);
-            double driveEnd = getDriveTime(endPoint, currentBasicHome);
+            double driveEnd = getDriveTime(endPoint, currentEndHome);
 
             if(driveBasic < driveEnd)
             {
@@ -79,12 +79,35 @@ public class HomeProcessor
             else
             {
                 time = time + getDriveTime(endPoint, currentEndHome) + currentEndHome.getDuration();
-                endPoint = currentBasicHome;
+                endPoint = currentEndHome;
                 dayList.remove(currentEndHome);
             }
 
         }
         return time;
+    }
+
+    public void showDriveTime(List<List<Home>> days)
+    {
+        double totalTime = 0d;
+
+        String dayTimeString = "Day %d drive time: %.2f min";
+        for(List<Home> day : days)
+        {
+            double dayTime = 0d;
+            if(day.size() > 2)
+            {
+                for (int i = 1; i < days.size() + 1; i++) {
+                    double curTime = getDriveTime(day.get(i), day.get(i-1));
+                    dayTime += curTime;
+                }
+            }
+            totalTime +=dayTime;
+//            System.out.println(String.format(dayTimeString, days.indexOf(day) + 1, dayTime));
+        }
+        String totalString = "\nTotal drive time: %.2f min";
+        System.out.println(String.format(totalString, totalTime));
+
     }
 
     private double getDriveTime(Home home1, Home home2)
@@ -263,7 +286,7 @@ public class HomeProcessor
 
                 if(driveBasic < driveEnd)
                 {
-                    newDay.add(newDay.indexOf(basicPoint), currentBasicHome);
+                    newDay.add(0, currentBasicHome);
                     basicPoint = currentBasicHome;
                     day.remove(currentBasicHome);
                 }
