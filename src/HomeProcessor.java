@@ -214,18 +214,22 @@ public class HomeProcessor
 
         //System.out.println("New centers : " + points.keySet());
 
-        List<List<Home>> newDays = new ArrayList<>(days.size());
-        Set<Point> pointSet = points.keySet();
+        List<Point> pointList = new ArrayList<>();
+
+        for(Point p : points.keySet())
+        {
+            pointList.add(p);
+        }
 
         for (Home home : homes)
         {
-            double rMin = Double.POSITIVE_INFINITY;
             List<Home> day = null;
             Point point1 = null;
             boolean add = true;
 
             while (add) {
-                for (Point point : pointSet)
+                double rMin = Double.POSITIVE_INFINITY;
+                for (Point point : pointList)
                 {
                     double r = getDriveTime(point, home);
                     if (r < rMin) {
@@ -239,7 +243,7 @@ public class HomeProcessor
                 if(time > 480)
                 {
                     day.remove(home);
-                    pointSet.remove(point1);
+                    pointList.remove(point1);
                 }
                 else
                 {
@@ -252,7 +256,6 @@ public class HomeProcessor
         {
             returnDays.add(day);
         }
-
 
         return returnDays;
     }
