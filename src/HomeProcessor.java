@@ -87,27 +87,27 @@ public class HomeProcessor
         return time;
     }
 
-    public void showDriveTime(List<List<Home>> days)
+    public double calculateTotalDriveTime(List<List<Home>> days)
     {
         double totalTime = 0d;
-
-        String dayTimeString = "Day %d drive time: %.2f min";
         for(List<Home> day : days)
         {
-            double dayTime = 0d;
-            if(day.size() > 2)
-            {
-                for (int i = 1; i < days.size() + 1; i++) {
-                    double curTime = getDriveTime(day.get(i), day.get(i-1));
-                    dayTime += curTime;
-                }
-            }
-            totalTime +=dayTime;
-//            System.out.println(String.format(dayTimeString, days.indexOf(day) + 1, dayTime));
+            totalTime +=calculateDayDriveTime(day);
         }
-        String totalString = "\nTotal drive time: %.2f min";
-        System.out.println(String.format(totalString, totalTime));
+        return totalTime;
+    }
 
+    private double calculateDayDriveTime(List<Home> day)
+    {
+        double dayTime = 0d;
+        if(day.size() > 2)
+        {
+            for (int i = 1; i < day.size(); i++) {
+                double curTime = getDriveTime(day.get(i), day.get(i-1));
+                dayTime += curTime;
+            }
+        }
+        return dayTime;
     }
 
     private double getDriveTime(Home home1, Home home2)
@@ -302,6 +302,28 @@ public class HomeProcessor
         }
 
         return newList;
+    }
+
+    public void showAllInfo(List<List<Home>> days)
+    {
+        String header = "\n====== COMMON INFO ========================================================";
+        String totalTime = "TOTAL TIME: %.2f min";
+        String totalDayTime = "Total time: %.2f min";
+        String totalDriveTime = "TOTAL DRIVE TIME: %.2f min";
+        String dayDriveTime = "Day drive time: %.2f min";
+
+        System.out.println(header);
+        System.out.println(String.format(totalTime, calculateTotalTime(days)));
+        System.out.println(String.format(totalDriveTime, calculateTotalDriveTime(days)));
+
+        for(List<Home> day : days)
+        {
+            System.out.println("\n===== DAY " + (days.indexOf(day)+1)+ " ===============================================================");
+            System.out.println("Homes: " + day);
+            System.out.println("Number of houses: " + day.size());
+            System.out.println(String.format(totalDayTime, calculateTime(day)));
+            System.out.println(String.format(dayDriveTime, calculateDayDriveTime(day)));
+        }
     }
 
 }
