@@ -1,6 +1,3 @@
-/**
- * Created by pavel on 02.06.15.
- */
 public class Point
 {
     private double x;

@@ -2,6 +2,9 @@ import java.util.*;
 
 public class HomeProcessor
 {
+    /**
+     *   Find nearest home relative to basic point(coordinates of the home)
+     */
     public Home findNearestHome(Point basicPoint, List<Home> homeList)
     {
         Home nearestHome = null;
@@ -24,6 +27,9 @@ public class HomeProcessor
         return nearestHome;
     }
 
+    /**
+     *   Find nearest home relative to basic home
+     */
     public Home findNearestHome(Home basicHome, List<Home> homeList)
     {
        return findNearestHome(basicHome.getPoint(), homeList);
@@ -51,6 +57,10 @@ public class HomeProcessor
         return dayList;
     }
 
+    /**
+     *   Calculates total time for one day.
+     *   Total time includes drive time and home duration
+     */
     public double calculateTime(List<Home> dayListOrign)
     {
         if(dayListOrign.size() < 2)
@@ -87,6 +97,9 @@ public class HomeProcessor
         return time;
     }
 
+    /**
+     *   Calculates total drive time for ALL days.
+     */
     public double calculateTotalDriveTime(List<List<Home>> days)
     {
         double totalTime = 0d;
@@ -97,6 +110,9 @@ public class HomeProcessor
         return totalTime;
     }
 
+    /**
+     *   Calculates drive time for ONE day.
+     */
     private double calculateDayDriveTime(List<Home> day)
     {
         double dayTime = 0d;
@@ -110,6 +126,9 @@ public class HomeProcessor
         return dayTime;
     }
 
+    /**
+     *   Return drive time between two homes.
+     */
     private double getDriveTime(Home home1, Home home2)
     {
         double x1 = home1.getPoint().getX();
@@ -118,6 +137,9 @@ public class HomeProcessor
        return getDriveTime(x1, y1, home2);
     }
 
+    /**
+     *   Return drive time between xy coordinates and home.
+     */
     private double getDriveTime(double x1, double y1, Home home2)
     {
         double x2 = home2.getPoint().getX();
@@ -126,6 +148,9 @@ public class HomeProcessor
         return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     }
 
+    /**
+     *   Return drive time between point and home.
+     */
     private double getDriveTime(Point point, Home home)
     {
         double x1 = point.getX();
@@ -138,7 +163,8 @@ public class HomeProcessor
     }
 
     /**
-     *   Find point, nearest to corner
+     *   Find point, nearest to corner.
+     *   This method only for start algorithm.
      */
     public Home getNearestToCorner(List<Home> homeListOrign)
     {
@@ -184,6 +210,10 @@ public class HomeProcessor
         return nearest;
     }
 
+    /**
+     *   Calculate total time for ALL days.
+     *   (drive time + duration time)
+     */
     public double calculateTotalTime(List<List<Home>> days)
     {
         double sum = 0d;
@@ -194,6 +224,11 @@ public class HomeProcessor
         return sum;
     }
 
+    /**
+     *   Optimizes the distribution of houses by day.
+     *   Find new centers of every area(day) and redistributes homes.
+     *   This method can be repeated several times for greater precisionю
+     */
     public List<List<Home>> optimizeRoute(List<List<Home>> days, List<Home> homeListOrign)
     {
         List<Home> homes = new ArrayList<>(homeListOrign);
@@ -260,6 +295,9 @@ public class HomeProcessor
         return returnDays;
     }
 
+    /**
+     *    Minimizes the path using Dijkstra's algorithm
+     */
     public List<List<Home>> minimizeDriveTime(List<List<Home>> daysOrign)
     {
         List<List<Home>> newList =  new ArrayList<>();
@@ -307,6 +345,18 @@ public class HomeProcessor
         return newList;
     }
 
+    /**
+     *  Show common info:
+     *  - total time;
+     *  - total drive time;
+     *
+     *   And info about every day:
+     *   - total time;
+     *   - drive time;
+     *   - number of houses;
+     *   - houses info(duration and coordinates);
+     *
+     */
     public void showAllInfo(List<List<Home>> days)
     {
         String header = "\n====== COMMON INFO ========================================================";
